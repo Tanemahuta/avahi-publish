@@ -1,0 +1,44 @@
+name: "verify"
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_call:
+    inputs: {}
+  workflow_dispatch:
+    inputs: {}
+jobs:
+  fullbuild:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: run
+        run: ""
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      docker: ${{ steps.changes.outputs.docker == 'true'}}
+    steps:
+      # Checkout
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      # Determine changes
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            docker:
+              - 'Dockerfile'
+              - '.dockerignore'
+              - '.hadolint.yaml'
+              - 'buildinfo/*.sh'
+              - '.github/actions/docker-*/*.yaml'
+              - '.github/workflows/*-docker.yaml'
+  docker:
+    needs:
+      - changes
+      - fullbuild
+    uses: ./.github/workflows/verify-docker.yaml
+    if: needs.changes.outputs.docker == 'true' || needs.fullbuild.outputs.run
