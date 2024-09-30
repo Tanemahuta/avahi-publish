@@ -11,7 +11,7 @@ LABEL org.label-schema.schema-version = "1.0"\
 VOLUME /var/run/dbus
 
 # Add the avahi-tools containing avahi-publish
-RUN apk add --no-cache avahi-tools=0.8-r13
+RUN apk add --no-cache avahi-tools=0.8-r17
 
 # Entrypoint is the publish command for an address
 ENTRYPOINT ["/usr/bin/avahi-publish", "-a"]
