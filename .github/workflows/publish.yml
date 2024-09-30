@@ -24,7 +24,7 @@ jobs:
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3.1.1
+        uses: sigstore/cosign-installer@v3.5.0
       - uses: ./.github/actions/docker-setup
         with:
           platforms: ${{ env.PLATFORMS }}
