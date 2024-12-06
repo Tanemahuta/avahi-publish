@@ -1,4 +1,4 @@
-FROM alpine:3.20
+FROM alpine:3.21
 
 LABEL org.label-schema.schema-version = "1.0"\
       org.label-schema.name="avahi-publish"\
